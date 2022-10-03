@@ -16,8 +16,42 @@ class Builder():
         self.avail_vars = sorted(list(set(avail_vars)), reverse=True)
 
         self.infix = infix
-        self.graph = None
-        pass  ## ToDO: implement and set self.graph
+
+        is_parent_from: dict = {}
+        has_operation: dict = {}
+        self.graph = self.build_graph(infix)
+
+
+    def build_graph(self, infix):
+        var_name = self.avail_vars.pop()
+        if len(self.infix) == 3:
+            arg_1, operator, arg_2 = self.infix
+            self.has_operation[var_name] = operator
+
+            # Perform recursion
+            child_1 = self.build_graph(arg_1)
+            child_2 = self.build_graph(arg_2)
+            self.is_parent_from[var_name] += [child_1, child_2]
+
+        elif len(self.infix) == 2:
+            arg_1, operator = self.infix
+            self.has_operation[var_name] = operator
+            
+            # Perform recursion
+            child_1 = self.build_graph(arg_1)
+            self.is_parent_from[var_name] 
+            self.is_parent_from[var_name] += [child_1]
+            
+        else:
+            return self.infix
+
+        return var_name
+        
+
+
+
+
+
 
 
 if __name__ == '__main__':
