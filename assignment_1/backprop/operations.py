@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import math
 
 class Operator(ABC):
-
+    
     @abstractmethod
     def f(self, a, b = None) -> float:
         raise NotImplementedError()
@@ -58,8 +58,6 @@ class Add(Operator):
     def df(self, a, b = None):
         return [1, 1]
 
-
-
 class Sub(Operator):
 
     def f(self, a, b = None):
@@ -69,9 +67,9 @@ class Sub(Operator):
             return a - b
 
     def df(self, a, b = None):
-        if isinstance(b, None):
-            return [-1]
-        else: 
+        if b is None:
+            return [1]
+        else:
             return [1, -1]
 
 

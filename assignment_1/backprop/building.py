@@ -17,33 +17,38 @@ class Builder():
 
         self.infix = infix
 
-        is_parent_from: dict = {}
-        has_operation: dict = {}
-        self.graph = self.build_graph(infix)
+        self.parent: dict = {}
+        self.operation: dict = {}
+        root = self.build_graph(infix)
+        self.graph = (self.parent, self.operation, root)
+
 
 
     def build_graph(self, infix):
         var_name = self.avail_vars.pop()
-        if len(self.infix) == 3:
-            arg_1, operator, arg_2 = self.infix
-            self.has_operation[var_name] = operator
+        if len(infix) == 3:
+            arg_1, operator, arg_2 = infix
+            self.operation[var_name] = operator
 
             # Perform recursion
-            child_1 = self.build_graph(arg_1)
-            child_2 = self.build_graph(arg_2)
-            self.is_parent_from[var_name] += [child_1, child_2]
+            parent_1 = self.build_graph(arg_1)
+            parent_2 = self.build_graph(arg_2)
 
-        elif len(self.infix) == 2:
+            self.parent[var_name] += [parent_1, parent_2]
+            self.parent[var_name] += [parent_1,
+
+        elif len(infix) == 2:
             arg_1, operator = self.infix
-            self.has_operation[var_name] = operator
-            
+            self.operation[var_name] = operator
+
             # Perform recursion
-            child_1 = self.build_graph(arg_1)
-            self.is_parent_from[var_name] 
-            self.is_parent_from[var_name] += [child_1]
+            parent_1 = self.build_graph(arg_1)
+            self.parent[var_name] 
+
+            self.parent[var_name] += [parent_1]
             
         else:
-            return self.infix
+            return infix
 
         return var_name
         
