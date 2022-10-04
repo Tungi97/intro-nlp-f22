@@ -43,7 +43,7 @@ class Executor():
     ## backward execution____________________________
 
     def backward(self, ):
-        self.derivative = self.backward(self.root)
+        self.derivative = self.backward_helper(self.root)
     
     def backward_helper(self, current, prev=None):
         if prev is None:
