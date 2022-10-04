@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 class Builder():
-
+    
     def __init__(self, infix: list, in_vars: dict = {}):
         """
         infix: list of infix notation parse, e.g. [['exp', 2], '-', 3]
@@ -25,6 +25,9 @@ class Builder():
 
 
     def build_graph(self, infix):
+        if not isinstance(infix, list):
+            return infix
+
         var_name = self.avail_vars.pop()
         
         if len(infix) == 3:
@@ -38,24 +41,15 @@ class Builder():
             self.parent[var_name] = [parent_1, parent_2]
 
         elif len(infix) == 2:
-            arg_1, operator = self.infix
+            arg_1, operator = infix
             self.operation[var_name] = operator
 
             # Perform recursion
             parent_1 = self.build_graph(arg_1)
             self.parent[var_name] = [parent_1]
-            
-        else:
-            return infix
 
         return var_name
         
-
-
-
-
-
-
 
 if __name__ == '__main__':
    pass

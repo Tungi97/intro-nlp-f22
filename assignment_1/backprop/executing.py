@@ -43,7 +43,9 @@ class Executor():
     ## backward execution____________________________
 
     def backward(self, ):
-        self.derivative = self.backward_helper(self.root)
+        self.backward_helper(self.root)
+        # for var in self.in_vars:
+        #     self.derivative[var] = self.grad_cache[(self.root, var)]
     
     def backward_helper(self, current, prev=None):
         if prev is None:
