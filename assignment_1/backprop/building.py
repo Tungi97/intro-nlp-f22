@@ -35,7 +35,6 @@ class Builder():
             parent_2 = self.build_graph(arg_2)
 
             self.parent[var_name] += [parent_1, parent_2]
-            self.parent[var_name] += [parent_1,
 
         elif len(infix) == 2:
             arg_1, operator = self.infix
