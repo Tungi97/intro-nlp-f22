@@ -21,7 +21,7 @@ class Executor():
     ## forward execution____________________________
 
     def forward(self, ):
-        self.output = self.forward_helper(self.root, self.in_vars)
+        self.output = self.forward_helper(self.root)
 
     def forward_helper(self, current):
         if not current in self.parent:
@@ -29,7 +29,7 @@ class Executor():
 
         else:
             op = self.operation[current]
-            if len(self.parent[current]) == 3:
+            if len(self.parent[current]) == 2:
                 parent_1 = self.parent[current][0]
                 parent_2 = self.parent[current][1]
                 self.f[current] = self.fn_map[op].f(self.forward_helper(parent_1), self.forward_helper(parent_2))

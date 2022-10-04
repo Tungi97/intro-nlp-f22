@@ -26,6 +26,7 @@ class Builder():
 
     def build_graph(self, infix):
         var_name = self.avail_vars.pop()
+        
         if len(infix) == 3:
             arg_1, operator, arg_2 = infix
             self.operation[var_name] = operator
@@ -34,7 +35,7 @@ class Builder():
             parent_1 = self.build_graph(arg_1)
             parent_2 = self.build_graph(arg_2)
 
-            self.parent[var_name] += [parent_1, parent_2]
+            self.parent[var_name] = [parent_1, parent_2]
 
         elif len(infix) == 2:
             arg_1, operator = self.infix
@@ -42,9 +43,7 @@ class Builder():
 
             # Perform recursion
             parent_1 = self.build_graph(arg_1)
-            self.parent[var_name] 
-
-            self.parent[var_name] += [parent_1]
+            self.parent[var_name] = [parent_1]
             
         else:
             return infix
