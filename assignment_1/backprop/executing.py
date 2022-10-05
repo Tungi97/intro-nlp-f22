@@ -57,34 +57,35 @@ class Executor():
     def backward_helper(self, current, prev=None):
         if current not in self.parent:
             return
-        
-        op = self.operation[current]
-        if len(self.parent[current]) == 2: # binary operation
-
-            parent_1, parent_2 = self.parent[current]
-
-            f_parent_1 = self.f[str(parent_1)]
-            f_parent_2 = self.f[str(parent_2)]
-
-            prev_df = self.get_prev_df(current, prev)
-            df_1, df_2 = [prev_df * df for df in self.get_df(op, f_parent_1, f_parent_2)]
-
-            self.update_grad_cache(self.root, parent_1, df_1)
-            self.update_grad_cache(self.root, parent_2, df_2)
-
-            self.backward_helper(parent_1, current)
-            self.backward_helper(parent_2, current)
+            
         else:
+            op = self.operation[current]
+            if len(self.parent[current]) == 2: # binary operation
 
-            parent_1 = self.parent[current][0]
-            f_parent_1 = self.f[parent_1]
+                parent_1, parent_2 = self.parent[current]
 
-            prev_df = self.get_prev_df(current, prev)
-            df_list = self.get_df(op, f_parent_1)
-            df_1 = [prev_df * df for df in df_list][0]
+                f_parent_1 = self.f[str(parent_1)]
+                f_parent_2 = self.f[str(parent_2)]
 
-            self.update_grad_cache(self.root, parent_1, df_1)
-            self.backward_helper(parent_1, current)
+                prev_df = self.get_prev_df(current, prev)
+                df_1, df_2 = [prev_df * df for df in self.get_df(op, f_parent_1, f_parent_2)]
+
+                self.update_grad_cache(self.root, parent_1, df_1)
+                self.update_grad_cache(self.root, parent_2, df_2)
+
+                self.backward_helper(parent_1, current)
+                self.backward_helper(parent_2, current)
+
+            else:
+                parent_1 = self.parent[current][0]
+                f_parent_1 = self.f[parent_1]
+
+                prev_df = self.get_prev_df(current, prev)
+                df_list = self.get_df(op, f_parent_1)
+                df_1 = [prev_df * df for df in df_list][0]
+
+                self.update_grad_cache(self.root, parent_1, df_1)
+                self.backward_helper(parent_1, current)
 
     def update_grad_cache(self, root, parent, df):
         if not (root, parent) in self.grad_cache:

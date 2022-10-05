@@ -26,32 +26,32 @@ class Builder():
 
     def build_graph(self, infix):
         if not isinstance(infix, list):
-
             # Stop recursion 
             return infix
 
-        var_name = self.avail_vars.pop()
-        
-        if len(infix) == 3: # binary operation
-            arg_1, operator, arg_2 = infix
-            self.operation[var_name] = operator
+        else:
+            var_name = self.avail_vars.pop()
+            
+            if len(infix) == 3: # binary operation
+                arg_1, operator, arg_2 = infix
+                self.operation[var_name] = operator
 
-            # Perform recursion
-            parent_1 = self.build_graph(arg_1)
-            parent_2 = self.build_graph(arg_2)
+                # Perform recursion
+                parent_1 = self.build_graph(arg_1)
+                parent_2 = self.build_graph(arg_2)
 
-            # Update parent list
-            self.parent[var_name] = [parent_1, parent_2]
+                # Update parent list
+                self.parent[var_name] = [parent_1, parent_2]
 
-        elif len(infix) == 2: # binary operation
-            operator, arg_1 = infix
-            self.operation[var_name] = operator
+            elif len(infix) == 2: # binary operation
+                operator, arg_1 = infix
+                self.operation[var_name] = operator
 
-            # Perform recursion
-            parent_1 = self.build_graph(arg_1)
+                # Perform recursion
+                parent_1 = self.build_graph(arg_1)
 
-            # Update parent list
-            self.parent[var_name] = [parent_1]
+                # Update parent list
+                self.parent[var_name] = [parent_1]
 
         return var_name
         
