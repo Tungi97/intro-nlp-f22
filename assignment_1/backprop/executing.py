@@ -49,9 +49,6 @@ class Executor():
             self.derivative[var] = self.grad_cache[(self.root, var)]
     
     def backward_helper(self, current, prev=None):
-        if prev is None:
-            prev = self.root
-
         if current not in self.parent:
             return
         
@@ -59,24 +56,12 @@ class Executor():
         if len(self.parent[current]) == 2: # binary operation
             parent_1, parent_2 = self.parent[current]
 
-            # TODO: check if leaf is a scalar
             f_parent_1 = self.f[str(parent_1)]
             f_parent_2 = self.f[str(parent_2)]
 
-            # print("current: " + str(current))
-            # print("parent_1: " + str(parent_1))
-            # print("parent_1: " + str(parent_2))
-            # print("f_parent_1: " + str(f_parent_1))
-            # print("f_parent_2: " + str(f_parent_2))
-            # print("values: " + str(self.f))
-            # print("Prev: " + str(prev) + " " + str(prev == self.root))
-            prev_df = 1 if prev == self.root else self.grad_cache[(self.root, current)]
+            prev_df = 1 if prev is None else self.grad_cache[(self.root, current)]
             df_list = self.fn_map[op].df(f_parent_1, f_parent_2)
             df_1, df_2 = [prev_df * df for df in df_list]
-            # print("prev_df: " + str(prev_df))
-            # print("df_1: " + str(df_1))
-            # print("df_2: " + str(df_2))
-            # print("\n")
 
             self.update_grad_cache(self.root, parent_1, df_1)
             self.update_grad_cache(self.root, parent_2, df_2)
@@ -86,23 +71,13 @@ class Executor():
         else:
             parent_1 = self.parent[current][0]
             f_parent_1 = self.f[parent_1]
-            # print("current: " + str(current))
-            # print("parent_1: " + str(parent_1))
-            # print("f_parent: " + str(f_parent_1))
-            # print("values: " + str(self.f))
-            # print("Prev: " + str(prev) + " " + str(prev == self.root))
-            prev_df = 1 if prev == self.root else self.grad_cache[(self.root, current)]
+
+            prev_df = 1 if prev is None else self.grad_cache[(self.root, current)]
             df_list = self.fn_map[op].df(f_parent_1)
             df_1 = [prev_df * df for df in df_list][0]
-            
-            # print("prev_df: " + str(prev_df))
-            # print("df_1: " + str(df_1))
-            # print("\n")
 
             self.update_grad_cache(self.root, parent_1, df_1)
             self.backward_helper(parent_1, current)
-
-
 
     def update_grad_cache(self, root, parent, df):
         if not (root, parent) in self.grad_cache:
@@ -110,13 +85,6 @@ class Executor():
         else:
             self.grad_cache[(root, parent)] += df
         
-
-
-
-
-
-
-
 
 if __name__ == '__main__':
     pass
