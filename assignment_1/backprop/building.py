@@ -19,8 +19,8 @@ class Builder():
 
         self.parent: dict = {}
         self.operation: dict = {}
-        root = self.build_graph(infix)
-        self.graph = (self.parent, self.operation, root)
+        self.root = self.build_graph(infix)
+        self.graph = (self.parent, self.operation, self.root)
 
 
 
@@ -41,7 +41,7 @@ class Builder():
             self.parent[var_name] = [parent_1, parent_2]
 
         elif len(infix) == 2:
-            arg_1, operator = infix
+            operator, arg_1 = infix
             self.operation[var_name] = operator
 
             # Perform recursion

@@ -61,7 +61,7 @@ class Add(Operator):
 class Sub(Operator):
 
     def f(self, a, b = None):
-        if isinstance(b, None):
+        if b is None:
             return -a
         else:
             return a - b
